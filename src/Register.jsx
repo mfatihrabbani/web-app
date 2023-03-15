@@ -5,9 +5,11 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+
   const handleSubmitRegister = (event) => {
     event.preventDefault()
-    console.log(email + " " + password + " " + confirmPassword) 
+    console.log(email + " " + password + " " + confirmPassword)
+
   }
   
   return (
