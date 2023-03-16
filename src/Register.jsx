@@ -4,11 +4,28 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState();
 
 
-  const handleSubmitRegister = (event) => {
+  const handleSubmitRegister = async (event) => {
     event.preventDefault()
-    console.log(email + " " + password + " " + confirmPassword)
+    let response = await fetch("http://localhost:3001/api/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        confirmPassword
+      })
+    })
+
+    response = await response.json()
+    console.log(response)
+    if(response.status != 200){
+      setError(response.message)
+    }
 
   }
   
@@ -17,6 +34,16 @@ function Register() {
       <form className="auth-form" onSubmit={handleSubmitRegister}>
         <div className="auth-content">
           <h3 className="auth-title">Sign In</h3>
+          {
+            error ? 
+            <>
+              <h4>{error}</h4>
+            </>
+            :
+            <>
+              null
+            </>
+          }
           <div className="form-group mt-3">
             <label>Email Address</label>
             <input

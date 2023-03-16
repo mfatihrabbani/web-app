@@ -5,12 +5,12 @@ function ForgotPassword(){
   const [newPassword, setNewPassword] = useState("")
   const [confirmPasword, setConfirmPassword] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [token, setToken] = useState("");
 
     useEffect(() => {
         const parameters = new URLSearchParams(window.location.search)
-        const token = parameters.get('token')
-        console.log("TOKEN", token)
-        console.log(process.env.URL)
+        const tokens = parameters.get('token')
+        setToken(tokens)
         if(token == null || token == undefined){
             setError(true)
             setErrorMessage("GADA TOKEN")
@@ -18,7 +18,17 @@ function ForgotPassword(){
     })
 
   const submitDataForgotPassword = async () => {
-    let response = await fetch("http://localhost:3001/api/forgot")
+    let response = await fetch("http://localhost:3001/api/users/forgot", {
+      method: "POST",
+      body: JSON.stringify({
+        newPassword,
+        confirmPasword,
+        token
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
     response = await response.json()
 
     if(response.status !== 200){
